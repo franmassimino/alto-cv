@@ -13,7 +13,11 @@ AltoCV es una plataforma innovadora que utiliza inteligencia artificial para ada
 ---
 
 ## 📸 Capturas de Pantalla
-_Añade aquí capturas de pantalla del sistema_
+
+![image](https://github.com/user-attachments/assets/05fd7eab-0c65-4dec-8c1b-4da5ba63e02b)
+
+![image](https://github.com/user-attachments/assets/8ea63f12-ad89-4e34-85cf-f19d00d21c17)
+
 
 ---
 
