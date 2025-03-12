@@ -45,7 +45,7 @@ export function Pricing() {
   )
 }
 
-function PricingCard({ title, price, period, features, buttonText, popular = false }: unknown) {
+function PricingCard({ title, price, period, features, buttonText, popular = false }: any) {
   return (
     <div className={`relative bg-background flex flex-col rounded-2xl p-6 shadow-lg`}>
       {popular && (
@@ -61,7 +61,7 @@ function PricingCard({ title, price, period, features, buttonText, popular = fal
         </div>
       </div>
       <ul className="my-6 space-y-4">
-        {features.map((feature: unknown, index: unknown) => (
+        {features.map((feature: any, index: any) => (
           <li key={index} className="flex items-center">
             <Check className="mr-2 h-4 w-4 text-primary" />
             <span>{feature}</span>

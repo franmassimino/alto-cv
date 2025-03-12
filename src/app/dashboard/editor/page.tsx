@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { EditorSection } from "@/components/dashboard/editor/editor-section"
 import { AiSidebar } from "@/components/dashboard/editor/ai-sidebar"
@@ -14,6 +14,9 @@ const EditorPage = () => {
   const searchParams = useSearchParams()
   const templateId = searchParams.get("template")
   const templateType = searchParams.get("type")
+  const [content, setContent] = useState()
+
+  console.log(templateId, templateType)
 
   // Default layout con 70% para el editor y 30% para el sidebar
   const defaultLayout = [70, 30]
@@ -25,7 +28,7 @@ const EditorPage = () => {
     >
       {/* EditorSection principal */}
       <ResizablePanel defaultSize={defaultLayout[0]} minSize={30}>
-        <EditorSection templateId={templateId} templateType={templateType} />
+        <EditorSection content={content} setContent={setContent} />
       </ResizablePanel>
 
       <ResizableHandle withHandle />

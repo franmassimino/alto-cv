@@ -1,7 +1,7 @@
 import Image from "next/image";
 import SignOut from "@/components/login/sign-out"
 
-export default function Profile({ session }: unknown) {
+export default function Profile({ session }: any) {
   return (
     <div className="w-full p-8 max-w-[1600px] mx-auto">
       <h1 className="text-2xl font-bold mb-6">Perfil</h1>

@@ -52,9 +52,9 @@ const TemplatesList = () => {
     )
 }
 
-const TemplateGrid = ({ templates, isBase = false }: unknown) => (
+const TemplateGrid = ({ templates, isBase = false }: any) => (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {templates.map((template: unknown) => (
+        {templates.map((template: any) => (
             <Link
                 href={`/dashboard/editor?template=${template.id}${isBase ? "&type=base" : ""}`}
                 key={template.id}
@@ -71,7 +71,7 @@ const TemplateGrid = ({ templates, isBase = false }: unknown) => (
     </div>
 )
 
-const EmptyState = ({ message, buttonText }: unknown) => (
+const EmptyState = ({ message, buttonText }: any) => (
     <div className="rounded-lg border border-dashed p-8 text-center">
         <h3 className="font-medium mb-2">{message}</h3>
         <p className="text-sm text-muted-foreground mb-4">

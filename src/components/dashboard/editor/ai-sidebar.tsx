@@ -22,7 +22,7 @@ type FileType = {
   file?: File // Añadimos el archivo original para enviarlo a la API
 }
 
-export function AiSidebar({ open, setOpen, isResizable = true, cvContent = "" }: RightSidebarProps) {
+export function AiSidebar({ open, setOpen, isResizable = true, }: RightSidebarProps) {
   const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([
     { role: "assistant", content: "Hola, soy tu asistente de CV AI. ¿En qué puedo ayudarte hoy?" },
   ])
@@ -56,72 +56,33 @@ export function AiSidebar({ open, setOpen, isResizable = true, cvContent = "" }:
     setIsLoading(true)
   
     try {
-      // Preparar los datos para la API
-      const attachments = files.map(file => ({
-        name: file.name,
-        type: file.type,
-        size: file.size
-      }))
-  
-      // Configuración para streaming con fetch
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cvContent,
-          userMessage: input,
-          attachments
-        }),
-      })
-  
-      if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status}`)
-      }
-  
-      // Verificar que la respuesta sea un stream
-      if (!response.body) {
-        throw new Error('ReadableStream no disponible')
-      }
-  
-      // Crear un mensaje vacío para ir llenándolo con la respuesta
+      // Simular un proceso de "respuesta" de la IA de forma controlada
       setMessages(prev => [...prev, { role: "assistant", content: "" }])
-      
-      // Método alternativo usando TextDecoderStream
-      const reader = response.body
-        .pipeThrough(new TextDecoderStream())
-        .getReader()
-      
+  
       let partialResponse = ""
+      const simulatedChunks = [
+        "Hola, ¿en qué puedo ayudarte?",
+        "Estoy procesando la información, por favor espera.",
+        "¡Listo! Aquí está tu respuesta final."
+      ]
       
-      try {
-        while (true) {
-          const { done, value } = await reader.read()
-          
-          if (done) break
-          
-          console.log("Chunk recibido:", value)
-          partialResponse += value
-          
-          // Actualizar el último mensaje con la respuesta parcial
-          setMessages(prev => {
-            const updated = [...prev]
-            updated[updated.length - 1] = { 
-              role: "assistant", 
-              content: partialResponse 
-            }
-            return updated
-          })
-        }
-      } catch (streamError) {
-        console.error("Error en la lectura del stream:", streamError)
-        // No lanzamos el error para seguir con la finalización
-      } finally {
-        // Intentar cerrar el reader de manera limpia
-        reader.releaseLock()
+      // Simulación de la recepción de chunks (partes de la respuesta)
+      for (const chunk of simulatedChunks) {
+        // Simulamos un pequeño retraso para cada "chunk"
+        await new Promise(resolve => setTimeout(resolve, 1000))
+  
+        partialResponse += chunk
+  
+        // Actualizar el último mensaje con la respuesta parcial
+        setMessages(prev => {
+          const updated = [...prev]
+          updated[updated.length - 1] = { 
+            role: "assistant", 
+            content: partialResponse 
+          }
+          return updated
+        })
       }
-      
     } catch (error) {
       console.error('Error al enviar mensaje:', error)
       setMessages(prev => [
@@ -134,6 +95,7 @@ export function AiSidebar({ open, setOpen, isResizable = true, cvContent = "" }:
       setFiles([])
     }
   }
+  
   
   const handleFilesDrop = useCallback((acceptedFiles: File[]) => {
     // Convertir archivos a objetos FileType
