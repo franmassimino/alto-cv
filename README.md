@@ -69,4 +69,3 @@ Este proyecto está bajo la licencia **MIT**. Puedes usarlo y modificarlo librem
 
 ## 📩 Contacto
 Si tienes dudas o sugerencias, contáctame en [tu-email@example.com](mailto:tu-email@example.com).
-
