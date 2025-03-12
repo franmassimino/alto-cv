@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 const CvPreviewDialog = ({ isPreviewOpen, togglePreview, content }: { isPreviewOpen: boolean, togglePreview: () => void, content: string }) => {
     const [loading, setLoading] = useState(false);
@@ -19,14 +18,6 @@ const CvPreviewDialog = ({ isPreviewOpen, togglePreview, content }: { isPreviewO
 
         const element = document.createElement('div');
         element.innerHTML = sanitizedContent;
-
-        const options = {
-            margin: 1,
-            filename: 'cv.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 4 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
 
         setLoading(true);
         console.log("Exporting PDF...");

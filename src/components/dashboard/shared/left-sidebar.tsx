@@ -10,8 +10,7 @@ import { useState } from "react"
 export function LeftSidebar({ session }: any) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-
-
+  console.log(session)
   const navItems = [
     {
       title: "Home",

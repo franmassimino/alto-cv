@@ -1,13 +1,13 @@
 import React from 'react'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Plus, FileText, Download, Share2, Edit, Clock, Star, Settings } from "lucide-react"
+import { Plus, FileText, Download, Edit, Clock, Star, Settings } from "lucide-react"
 import Image from "next/image"
 import { auth } from '@/lib/auth/auth'
 
 const Home = async () => {
     const session = await auth()
-    
+
     // Datos de ejemplo para "Mis CVs"
     const myCVs = [
         {

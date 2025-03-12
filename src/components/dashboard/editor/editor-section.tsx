@@ -3,7 +3,7 @@ import CvEditor from "../tinymce"
 import CvPreviewDialog from "./cv-preview-dialog"
 import { useState } from "react"
 
-export function EditorSection({ content, setContent }: any) {
+export function EditorSection({ content, setContent }: unknown) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
   const togglePreview = () => setIsPreviewOpen(!isPreviewOpen)

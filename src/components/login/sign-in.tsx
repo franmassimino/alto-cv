@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react'
 import { Button } from '../ui/button'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +25,7 @@ export default function SignIn() {
       <Button variant="outline" onClick={handleSignIn}>
         {isLoading ?
           <Loader2 className="animate-spin" /> :
-          <img src="/assets/google.webp" alt="Google Logo" className="h-4 w-4" />
+          <Image width={4} height={4} src="/assets/google.webp" alt="Google Logo" className="h-4 w-4" />
         }
         Acceder con Google
       </Button>
