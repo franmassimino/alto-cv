@@ -1,6 +1,6 @@
 # 📝 AltoCV
 
-**Optimiza tu currículum y destaca en el mercado laboral con inteligencia artificial.**
+AltoCV es una plataforma innovadora que utiliza inteligencia artificial para adaptar tu currículum a diferentes posiciones laborales, asegurando que superes los filtros de los sistemas de seguimiento de candidatos (ATS). Puedes subir referencias como enlaces o archivos de distintos formatos y buscar información adicional en Google. Además, te permite descargar tu CV en formato PDF o publicarlo en una URL hosteada directamente en la app, facilitando el acceso y la gestión de tu perfil profesional.
 
 ## 🚀 Características Principales
 
