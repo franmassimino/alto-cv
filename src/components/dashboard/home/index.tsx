@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Plus, FileText, Download, Edit, Clock, Star, Settings } from "lucide-react"
 import Image from "next/image"
-import { auth } from '@/lib/auth'
 import { CreateCVModal } from '@/components/modals/create-new-cv'
 
 const Home =  ({ session }: any) => {
