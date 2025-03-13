@@ -1,5 +1,5 @@
 import { LeftSidebar } from "@/components/dashboard/shared/left-sidebar"
-import { auth } from "@/lib/auth/auth"
+import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 interface DashboardLayoutProps {

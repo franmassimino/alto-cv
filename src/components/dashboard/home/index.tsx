@@ -1,12 +1,15 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Plus, FileText, Download, Edit, Clock, Star, Settings } from "lucide-react"
 import Image from "next/image"
-import { auth } from '@/lib/auth/auth'
+import { auth } from '@/lib/auth'
+import { CreateCVModal } from '@/components/modals/create-new-cv'
 
-const Home = async () => {
-    const session = await auth()
+const Home =  ({ session }: any) => {
+    const [createModalOpen, setCreateModalOpen] = useState(false)
 
     // Datos de ejemplo para "Mis CVs"
     const myCVs = [
@@ -52,7 +55,7 @@ const Home = async () => {
                 </h1>
                 <p className="text-muted-foreground mb-4">Crea, personaliza y optimiza tu CV con la ayuda de nuestra IA.</p>
                 <div className="flex flex-wrap gap-3">
-                    <Button>
+                    <Button onClick={() => setCreateModalOpen(true)}>
                         <Plus className="h-4 w-4 mr-2" />
                         Crear nuevo CV
                     </Button>
@@ -61,17 +64,15 @@ const Home = async () => {
                         Ver plantillas
                     </Button>
                 </div>
-            </div>
+            </div> {/* This closing div was missing */}
 
             {/* Mis CVs */}
             <div>
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold">Mis CVs</h2>
-                    <Button size="sm" variant="outline" asChild>
-                        <Link href="/dashboard/editor">
+                    <Button onClick={() => setCreateModalOpen(true)} size="sm" variant="outline">
                             <Plus className="h-4 w-4 mr-2" />
                             Nuevo CV
-                        </Link>
                     </Button>
                 </div>
 
@@ -123,12 +124,10 @@ const Home = async () => {
                         <p className="text-sm text-muted-foreground mb-4">
                             Crea tu primer CV personalizado o usa una de nuestras plantillas.
                         </p>
-                        <Button asChild>
-                            <Link href="/dashboard/editor">
-                                <Plus className="h-4 w-4 mr-2" />
-                                Crear CV
-                            </Link>
-                        </Button>
+                        <Button onClick={() => setCreateModalOpen(true)}>
+                            <Plus className="h-4 w-4 mr-2" />
+                            Nuevo CV
+                    </Button>
                     </div>
                 )}
 
@@ -200,6 +199,10 @@ const Home = async () => {
                     </Button>
                 </div>
             </div>
+
+
+            {/* Modal para crear nuevo CV */}
+            <CreateCVModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
         </div>
     )
 }

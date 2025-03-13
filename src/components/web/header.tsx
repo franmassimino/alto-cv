@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ThemeToggle } from "../ui/theme-toggle"
 import { Button } from "../ui/button"
-import { auth } from "@/lib/auth/auth"
+import { auth } from "@/lib/auth"
 
 export async function Header() {
   const session = await auth()

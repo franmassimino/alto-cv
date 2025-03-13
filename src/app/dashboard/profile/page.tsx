@@ -1,5 +1,5 @@
 import Profile from '@/components/dashboard/profile'
-import { auth } from '@/lib/auth/auth'
+import { auth } from '@/lib/auth'
 import React from 'react'
 
 const ProfilePage = async () => {
