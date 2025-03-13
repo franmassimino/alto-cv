@@ -3,9 +3,16 @@
 import React, { useState } from 'react'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Plus, FileText, Download, Edit, Clock, Star, Settings } from "lucide-react"
+import { Plus, FileText, Download, Edit, Clock, Star, Settings, Share, Copy, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { CreateCVModal } from '@/components/modals/create-new-cv'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const Home =  ({ session }: any) => {
     const [createModalOpen, setCreateModalOpen] = useState(false)
@@ -106,12 +113,36 @@ const Home =  ({ session }: any) => {
                                                 Editar
                                             </Link>
                                         </Button>
-                                        <Button size="sm" variant="outline" className="w-9 p-0">
-                                            <Download className="h-4 w-4" />
-                                        </Button>
-                                        <Button size="sm" variant="outline" className="w-9 p-0">
-                                            <Settings className="h-4 w-4" />
-                                        </Button>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button size="sm" variant="outline" className="w-9 p-0">
+                                                    <Settings className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem>
+                                                    <Edit className="h-4 w-4 mr-2" />
+                                                    Renombrar
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <Copy className="h-4 w-4 mr-2" />
+                                                    Duplicar
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <Share className="h-4 w-4 mr-2" />
+                                                    Compartir
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <Download className="h-4 w-4 mr-2" />
+                                                    Descargar
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="text-destructive">
+                                                    <Trash2 className="h-4 w-4 mr-2" />
+                                                    Eliminar
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </div>
                                 </div>
                             </div>
