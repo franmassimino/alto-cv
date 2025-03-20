@@ -16,8 +16,6 @@ const EditorPage = () => {
   const templateType = searchParams.get("type")
   const [content, setContent] = useState()
 
-  console.log(templateId, templateType)
-
   // Default layout con 70% para el editor y 30% para el sidebar
   const defaultLayout = [70, 30]
 

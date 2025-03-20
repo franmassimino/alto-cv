@@ -1,4 +1,4 @@
-import { LeftSidebar } from "@/components/dashboard/shared/left-sidebar"
+import { LeftSidebar } from "@/components/dashboard/sidebar/sidebar"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 

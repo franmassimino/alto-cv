@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { TrpcProvider } from "@/lib/trpc/TrpcProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <ThemeProvider
@@ -34,7 +33,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
+          <TrpcProvider> {/* ✅ Envolvemos la app con el provider */}
+            {children}
+          </TrpcProvider>
         </body>
       </ThemeProvider>
     </html>

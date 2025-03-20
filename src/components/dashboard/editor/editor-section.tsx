@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import CvEditor from "../tinymce"
+import MarkdownEditor from "../markdown"
 import CvPreviewDialog from "./cv-preview-dialog"
 import { useState } from "react"
 
@@ -14,7 +14,7 @@ export function EditorSection({ content, setContent }: any) {
         <div>
           <h1 className="text-2xl font-bold">Editor de CV</h1>
           <p className="text-muted-foreground">
-            Personaliza tu CV utilizando el editor o chatea con la IA para obtener ayuda.
+            Personaliza tu CV utilizando el editor Markdown o chatea con la IA para obtener ayuda.
           </p>
         </div>
         <div className="flex space-x-4">
@@ -23,7 +23,7 @@ export function EditorSection({ content, setContent }: any) {
       </div>
 
       {/* Área de edición */}
-      <CvEditor setContent={setContent} content={content} />
+      <MarkdownEditor setContent={setContent} content={content} />
 
       {/* Modal de Vista Previa */}
       <CvPreviewDialog isPreviewOpen={isPreviewOpen} togglePreview={togglePreview} content={content} />

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, FileText, Settings, User, ChevronLeft, ChevronRight, Edit } from "lucide-react"
+import { Home, FileText, Settings, User, ChevronLeft, ChevronRight, Edit, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "../../ui/theme-toggle"
 import { useState } from "react"
@@ -10,7 +10,7 @@ import { useState } from "react"
 export function LeftSidebar({ session }: any) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  console.log(session)
+  
   const navItems = [
     {
       title: "Home",
@@ -18,14 +18,14 @@ export function LeftSidebar({ session }: any) {
       icon: Home,
     },
     {
-      title: "Editor",
-      href: "/dashboard/editor",
-      icon: Edit,
-    },
-    {
       title: "Plantillas",
       href: "/dashboard/templates",
       icon: FileText,
+    },
+    {
+      title: "Nuevo CV",
+      href: "/dashboard/editor",
+      icon: Plus,
     },
   ]
 
