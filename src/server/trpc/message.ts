@@ -11,7 +11,7 @@ export const messageRouter = router({
 
   sendMessage: protectedProcedure
     .input(z.object({ chatId: z.string(), message: z.string() }))
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       return prisma.chatMessage.create({
         data: { chatId: input.chatId, sender: "USER", message: input.message },
       });

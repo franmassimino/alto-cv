@@ -1,4 +1,4 @@
-import { router, publicProcedure, protectedProcedure } from "./context";
+import { router, protectedProcedure } from "./context";
 import { prisma } from "@/lib/db/prisma";
 import { z } from "zod";
 

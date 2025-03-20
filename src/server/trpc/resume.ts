@@ -17,8 +17,6 @@ export const resumeRouter = router({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const totalResumes = await prisma.resume.count({ where: { userId: ctx.user.id } });
-
             if (!ctx.user.id) {
                 throw new Error("No puedes tener más de 10 CVs");
             }

@@ -2,12 +2,12 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, FileText, Settings, User, ChevronLeft, ChevronRight, Edit, Plus } from "lucide-react"
+import { Home, FileText, Settings, User, ChevronLeft, ChevronRight, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "../../ui/theme-toggle"
 import { useState } from "react"
 
-export function LeftSidebar({ session }: any) {
+export function LeftSidebar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   

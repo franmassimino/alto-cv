@@ -12,8 +12,8 @@ import {
 
 const EditorPage = () => {
   const searchParams = useSearchParams()
-  const templateId = searchParams.get("template")
-  const templateType = searchParams.get("type")
+  // const templateId = searchParams.get("template")
+  // const templateType = searchParams.get("type")
   const [content, setContent] = useState()
 
   // Default layout con 70% para el editor y 30% para el sidebar
