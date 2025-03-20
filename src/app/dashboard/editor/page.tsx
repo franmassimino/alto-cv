@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { EditorSection } from "@/components/dashboard/editor/editor-section"
 import { AiSidebar } from "@/components/dashboard/editor/ai-sidebar"
 import {
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/resizable"
 
 const EditorPage = () => {
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
   // const templateId = searchParams.get("template")
   // const templateType = searchParams.get("type")
   const [content, setContent] = useState()

@@ -13,7 +13,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
     return (
         <div className="flex h-screen overflow-hidden">
             {/* Sidebar izquierda */}
-            <LeftSidebar session={session} />
+            <LeftSidebar />
 
             {/* Contenido principal (Editor y Chat de IA ahora están en EditorPage) */}
             <main className="flex-1 overflow-auto">
