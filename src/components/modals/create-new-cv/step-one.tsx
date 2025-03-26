@@ -6,9 +6,10 @@ import { LayoutTemplateIcon, PenTool } from "lucide-react"
 interface StepOneProps {
   selectedOption: "template" | "new" | null
   setSelectedOption: (option: "template" | "new") => void
+  isCreating: boolean
 }
 
-export function StepOne({ selectedOption, setSelectedOption }: StepOneProps) {
+export function StepOne({ selectedOption, setSelectedOption, isCreating }: StepOneProps) {
   return (
     <div className="grid gap-6 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

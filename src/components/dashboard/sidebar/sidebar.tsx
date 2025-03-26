@@ -73,8 +73,8 @@ export function LeftSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                pathname === item.href
-                  ? "bg-primary/10 text-primary"
+                item.title === "Nuevo CV"
+                  ? "bg-primary/10 text-primary hover:bg-primary/20"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
@@ -91,9 +91,7 @@ export function LeftSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                pathname === item.href
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               <item.icon className="h-5 w-5" />
