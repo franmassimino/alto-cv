@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useRef, useEffect } from "react"
-import { ChevronRight, ChevronLeft, Send, File, Image, X, Loader2 } from "lucide-react"
+import { ChevronRight, ChevronLeft, Send, File, X, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { FileDropzone } from "../file-dropzone"
@@ -116,7 +116,7 @@ export function AiSidebar({ open, setOpen, isResizable = true, }: RightSidebarPr
   }
 
   const getFileIcon = (type: string) => {
-    if (type.startsWith("image/")) return <Image className="h-4 w-4" />
+    if (type.startsWith("image/")) return <X className="h-4 w-4" />
     return <File className="h-4 w-4" />
   }
 

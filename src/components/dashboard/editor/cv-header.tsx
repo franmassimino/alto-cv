@@ -38,7 +38,7 @@ interface CVHeaderProps {
     creationDate: Date
 }
 
-export function CVHeader({ cvName, setCVName, creationDate }: CVHeaderProps) {
+export function CVHeader({ cvName, setCVName }: CVHeaderProps) {
     const [isEditing, setIsEditing] = useState(false)
     const [tempName, setTempName] = useState(cvName)
     const [showRenameDialog, setShowRenameDialog] = useState(false)
