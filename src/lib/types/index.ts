@@ -26,17 +26,24 @@ export interface Education {
   description: string
 }
 
-export interface Skill {
-  id: string
-  name: string
-  level?: number // 1-5 para representar nivel de habilidad
-}
-
 export interface CustomSection {
   id: string
   title: string
   type: "text" | "list" | "bullets"
   content: string | string[]
+}
+
+export interface DesignSettings {
+  font: string // ej: "inter", "poppins"
+  colors: {
+    primary: string    // títulos, acentos
+    background: string // fondo
+    text: string       // texto principal
+  }
+  layout: "oneColumn" | "twoColumns"
+  spacing: "compact" | "normal" | "spacious"
+  showPhoto: boolean
+  photoUrl?: string
 }
 
 export interface CVData {
@@ -46,19 +53,7 @@ export interface CVData {
   education: Education[]
   skills: string[]
   customSections: CustomSection[]
-  sectionOrder: string[] // Array de IDs de sección para mantener el orden
+  sectionOrder: string[]
+  design: DesignSettings
+  [key: string]: any // 👈 Esto lo hace compatible con InputJsonValue
 }
-
-export interface DesignSettings {
-  font: string
-  colors: {
-    primary: string
-    background: string
-    text: string
-  }
-  layout: "oneColumn" | "twoColumns"
-  spacing: "compact" | "normal" | "spacious"
-  showPhoto: boolean
-  photoUrl?: string
-}
-

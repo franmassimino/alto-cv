@@ -9,12 +9,12 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?        @unique
   password      String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -22,13 +22,14 @@ model User {
   resumes       Resume[]
   sessions      Session[]
   templates     Template[]
+  personalData  PersonalData?
 }
 
 model Template {
   id          String       @id @default(uuid())
   name        String
   description String
-  content     String
+  content     Json          // ✅ JSON con contenido + diseño
   type        TemplateType
   userId      String?
   createdAt   DateTime     @default(now())
@@ -45,7 +46,7 @@ model Resume {
   currentVersionId String?         @unique
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
-  content          String
+  content          Json            // ✅ Incluye diseño embebido
   chats            Chat[]
   currentVersion   ResumeVersion?  @relation("CurrentVersion", fields: [currentVersionId], references: [id])
   template         Template?       @relation(fields: [templateId], references: [id])
@@ -57,7 +58,7 @@ model ResumeVersion {
   id            String   @id @default(uuid())
   resumeId      String
   versionNumber Int
-  content       String
+  content       Json     // ✅ Snapshot del contenido + estilo
   notes         String?
   createdAt     DateTime @default(now())
   asCurrentOf   Resume?  @relation("CurrentVersion")
@@ -127,6 +128,15 @@ model VerificationToken {
   identified String
 
   @@unique([identified, token])
+}
+
+model PersonalData {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  data      Json     // ✅ Contenido del formulario / IA
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum TemplateType {

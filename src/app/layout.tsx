@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { TrpcProvider } from "@/lib/trpc/TrpcProvider";
+import { Toaster } from "sonner"; // Importa el componente Toaster
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <TrpcProvider> {/* ✅ Envolvemos la app con el provider */}
+          <TrpcProvider>
             {children}
+            <Toaster position="bottom-right" /> {/* Añade el Toaster aquí */}
           </TrpcProvider>
         </body>
       </ThemeProvider>

@@ -1,48 +1,66 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Edit, Clock, Settings, Trash2, Copy, Check, X } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import DeleteCvModal from "@/components/modals/delete-cv/delete-cv-modal";
+"use client"
+
+import Link from "next/link"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Edit, Clock, Settings, Trash2, Copy, Check, X } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import DeleteCvModal from "@/components/modals/delete-cv/delete-cv-modal"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
+import { CVData } from "@/lib/types"
 
 interface CvCardProps {
     cv: {
-        id: string;
-        title: string;
-        updatedAt: string;
-    };
-    editId: string | null;
-    editTitle: string;
-    setEditTitle: (title: string) => void;
-    handleUpdate: (id: string) => void;
-    setEditId: (id: string | null) => void;
-    onDelete: (id: string) => void;
+        id: string
+        title: string
+        updatedAt: string
+        content: CVData // ✅ contenido del CV
+    }
+    editId: string | null
+    editTitle: string
+    setEditTitle: (title: string) => void
+    handleUpdate: (id: string, content: CVData) => void // ✅ incluye content
+    setEditId: (id: string | null) => void
+    onDelete: (id: string) => void
 }
 
-const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, onDelete }: CvCardProps) => {
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+const CvCard = ({
+    cv,
+    editId,
+    editTitle,
+    setEditTitle,
+    handleUpdate,
+    setEditId,
+    onDelete,
+}: CvCardProps) => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     const handleDelete = () => {
-        onDelete(cv.id);
-        setIsDeleteModalOpen(false);
-        toast.success("CV eliminado correctamente");
-    };
+        onDelete(cv.id)
+        setIsDeleteModalOpen(false)
+        toast.success("CV eliminado correctamente")
+    }
 
     return (
         <>
             <div className="rounded-lg border bg-card overflow-hidden transition-transform duration-200 hover:scale-[1.01]">
                 <Link href={`/dashboard/editor?cv=${cv.id}`}>
                     <div className="py-4 bg-muted relative cursor-pointer flex items-center justify-center">
-                        <Image alt="" width={170} height={170} src="/image.png" className="h-[90%] object-contain" />
+                        <Image
+                            alt=""
+                            width={170}
+                            height={170}
+                            src="/image.png"
+                            className="h-[90%] object-contain"
+                        />
                     </div>
                 </Link>
 
@@ -61,7 +79,7 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
                                         size="sm"
                                         variant="ghost"
                                         className="h-8 w-8 p-0"
-                                        onClick={() => handleUpdate(cv.id)}
+                                        onClick={() => handleUpdate(cv.id, cv.content)} // ✅ pasa content
                                     >
                                         <Check className="h-4 w-4" />
                                     </Button>
@@ -70,8 +88,8 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
                                         variant="ghost"
                                         className="h-8 w-8 p-0"
                                         onClick={() => {
-                                            setEditId(null);
-                                            setEditTitle("");
+                                            setEditId(null)
+                                            setEditTitle("")
                                         }}
                                     >
                                         <X className="h-4 w-4" />
@@ -85,7 +103,9 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
 
                     <div className="flex items-center text-xs text-muted-foreground mt-1 mb-3">
                         <Clock className="h-3 w-3 mr-1" />
-                        <span>Última edición: {new Date(cv.updatedAt).toLocaleDateString()}</span>
+                        <span>
+                            Última edición: {new Date(cv.updatedAt).toLocaleDateString()}
+                        </span>
                     </div>
 
                     <div className="flex gap-2">
@@ -98,12 +118,22 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button size="sm" variant="outline" className="w-9 p-0" disabled={editId === cv.id}>
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="w-9 p-0"
+                                    disabled={editId === cv.id}
+                                >
                                     <Settings className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => { setEditId(cv.id); setEditTitle(cv.title); }}>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setEditId(cv.id)
+                                        setEditTitle(cv.title)
+                                    }}
+                                >
                                     <Edit className="h-4 w-4 mr-2" />
                                     Renombrar
                                 </DropdownMenuItem>
@@ -112,8 +142,8 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
                                     Duplicar
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem 
-                                    className="text-destructive" 
+                                <DropdownMenuItem
+                                    className="text-destructive"
                                     onClick={() => setIsDeleteModalOpen(true)}
                                 >
                                     <Trash2 className="h-4 w-4 mr-2" />
@@ -132,7 +162,7 @@ const CvCard = ({ cv, editId, editTitle, setEditTitle, handleUpdate, setEditId, 
                 title={cv.title}
             />
         </>
-    );
-};
+    )
+}
 
-export default CvCard; 
+export default CvCard

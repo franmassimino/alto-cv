@@ -23,10 +23,12 @@ interface CreateCVModalProps {
 
 export function CreateCVModal({ open, onOpenChange }: CreateCVModalProps) {
   const [selectedOption, setSelectedOption] = useState<"template" | "new" | null>(null)
-  const { createResume, isCreating } = useResumes()
+  const [isCreating, setIsCreating] = useState<boolean>(false)
+  const { createResume } = useResumes()
 
   const handleContinue = () => {
     if (selectedOption) {
+      setIsCreating(true)
       createResume({
         title: selectedOption === "template" ? "Mi CV con Plantilla" : "Mi CV Personalizado"
       })

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 
-import { CVBuilder } from "@/components/dashboard/editor/cv-builder"
+import { CVBuilder } from "@/components/dashboard/editor"
 
 const EditorPage = () => {
   return <CVBuilder />

@@ -227,6 +227,8 @@ export function useSectionManagement(cvData: CVData, setCVData: (data: CVData) =
         ...cvData,
         sectionOrder: arrayMove(cvData.sectionOrder, oldIndex, newIndex),
       })
+
+      console.log(cvData.sectionOrder) 
     }
   }
 

@@ -1,23 +1,30 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import CvSkeleton from "../../shared/cv-skeleton";
-import { useResumes } from "@/hooks/resume/useResumes";
-import { Plus } from "lucide-react";
-import CvCard from "./cv-card";
+import React, { useState } from "react"
+import { Button } from "@/components/ui/button"
+import CvSkeleton from "../../shared/cv-skeleton"
+import { useResumes } from "@/hooks/resume/useResumes"
+import { Plus } from "lucide-react"
+import CvCard from "./cv-card"
+import { CVData } from "@/lib/types"
 
 const MyCvs = ({ handleCreate }: any) => {
-    const { resumes, isLoading, updateResume, deleteResume } = useResumes();
-    const [editId, setEditId] = useState<string | null>(null);
-    const [editTitle, setEditTitle] = useState("");
+    const { resumes, isLoadingResumes, updateResume, deleteResume } = useResumes()
+    const [editId, setEditId] = useState<string | null>(null)
+    const [editTitle, setEditTitle] = useState("")
 
-    const handleUpdate = (id: string) => {
-        if (!editTitle.trim()) return;
-        updateResume({ id, title: editTitle });
-        setEditId(null);
-        setEditTitle("");
-    };
+    const handleUpdate = (id: string, content: CVData) => {
+        if (!editTitle.trim()) return
+
+        updateResume({
+            id,
+            title: editTitle,
+            content, // ✅ mantenemos el contenido actual
+        })
+
+        setEditId(null)
+        setEditTitle("")
+    }
 
     return (
         <div>
@@ -29,7 +36,7 @@ const MyCvs = ({ handleCreate }: any) => {
                 </Button>
             </div>
 
-            {isLoading ? (
+            {isLoadingResumes ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <CvSkeleton />
                     <CvSkeleton />
@@ -37,7 +44,7 @@ const MyCvs = ({ handleCreate }: any) => {
                 </div>
             ) : resumes && resumes.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {resumes.map((cv) => (
+                    {resumes.map((cv: any) => (
                         <CvCard
                             key={cv.id}
                             cv={cv}

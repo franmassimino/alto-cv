@@ -1,13 +1,14 @@
-import { router, protectedProcedure } from "./context";
-import { prisma } from "@/lib/db/prisma";
-import { z } from "zod";
+import { router, protectedProcedure } from "./context"
+import { prisma } from "@/lib/db/prisma"
+import { emptyCVData } from "@/lib/defaults"
+import { z } from "zod"
 
 export const resumeRouter = router({
     getUserResumes: protectedProcedure.query(async ({ ctx }) => {
         return prisma.resume.findMany({
             where: { userId: ctx.user.id },
             orderBy: { createdAt: "desc" },
-        });
+        })
     }),
 
     createResume: protectedProcedure
@@ -17,17 +18,14 @@ export const resumeRouter = router({
             })
         )
         .mutation(async ({ input, ctx }) => {
-            if (!ctx.user.id) {
-                throw new Error("No puedes tener más de 10 CVs");
-            }
-
+            if (!ctx.user.id) throw new Error("No tienes permisos para editar este CV")
             return prisma.resume.create({
                 data: {
                     title: input.title,
                     userId: ctx.user.id,
-                    content: "",
+                    content: emptyCVData,
                 },
-            });
+            })
         }),
 
     updateResume: protectedProcedure
@@ -35,28 +33,47 @@ export const resumeRouter = router({
             z.object({
                 id: z.string(),
                 title: z.string().min(3, "El título debe tener al menos 3 caracteres"),
+                content: z.any().optional(),
             })
         )
         .mutation(async ({ input, ctx }) => {
-            const resume = await prisma.resume.findUnique({ where: { id: input.id } });
+            const resume = await prisma.resume.findUnique({ where: { id: input.id } })
 
-            if (!resume) throw new Error("CV no encontrado");
-            if (resume.userId !== ctx.user.id) throw new Error("No tienes permisos para editar este CV");
+            if (!resume) throw new Error("CV no encontrado")
+            if (resume.userId !== ctx.user.id) throw new Error("No tienes permisos para editar este CV")
 
             return prisma.resume.update({
                 where: { id: input.id },
-                data: { title: input.title },
-            });
+                data: {
+                    ...(input.title && { title: input.title }),
+                    ...(typeof input.content !== "undefined" && Object.keys(input.content).length > 0 && { content: input.content }),
+                }
+
+            })
         }),
 
     deleteResume: protectedProcedure
         .input(z.object({ id: z.string() }))
         .mutation(async ({ input, ctx }) => {
-            const resume = await prisma.resume.findUnique({ where: { id: input.id } });
+            const resume = await prisma.resume.findUnique({ where: { id: input.id } })
 
-            if (!resume) throw new Error("CV no encontrado");
-            if (resume.userId !== ctx.user.id) throw new Error("No tienes permisos para eliminar este CV");
+            if (!resume) throw new Error("CV no encontrado")
+            if (resume.userId !== ctx.user.id) throw new Error("No tienes permisos para eliminar este CV")
 
-            return prisma.resume.delete({ where: { id: input.id } });
+            return prisma.resume.delete({ where: { id: input.id } })
         }),
-});
+
+    getResumeById: protectedProcedure
+        .input(z.object({ id: z.string() }))
+        .query(async ({ input, ctx }) => {
+            const resume = await prisma.resume.findUnique({
+                where: { id: input.id },
+            })
+
+            if (!resume || resume.userId !== ctx.user.id) {
+                throw new Error("No tienes permisos para acceder a este CV")
+            }
+
+            return resume
+        }),
+})

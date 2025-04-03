@@ -1,116 +1,124 @@
-import { trpc } from "@/lib/trpc";
-import { useRouter } from "next/navigation";
+"use client"
 
-export const useResumes = () => {
-    const utils = trpc.useContext();
-    const router = useRouter();
+import { trpc } from "@/lib/trpc"
+import { useRouter } from "next/navigation"
 
-    // Obtener CVs del usuario
-    const { data: resumes, isLoading: isLoadingResumes } = trpc.resume.getUserResumes.useQuery();
+export const useResumes = (cvId?: string) => {
+    const utils = trpc.useContext()
+    const router = useRouter()
 
-    // Crear un nuevo CV
-    const { mutate: createResume, isLoading: isCreatingResume, error: createError } = trpc.resume.createResume.useMutation({
-        onMutate: async (newResume) => {
-            // Cancelar queries en curso
-            await utils.resume.getUserResumes.cancel();
-            // Guardar el estado anterior
-            const previousResumes = utils.resume.getUserResumes.getData();
-            // Optimistic update
-            utils.resume.getUserResumes.setData(undefined, (old) => {
-                if (!old) return [{
-                    ...newResume,
-                    id: 'temp-' + Date.now(),
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    userId: '', // Se actualizará con la respuesta del servidor
-                    templateId: null,
-                    currentVersionId: null,
-                    content: ''
-                }];
-                return [...old, {
-                    ...newResume,
-                    id: 'temp-' + Date.now(),
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    userId: '',
-                    templateId: null,
-                    currentVersionId: null,
-                    content: ''
-                }];
-            });
-            return { previousResumes };
+    // 📦 Queries
+    const {
+        data: resumes,
+        isLoading: isLoadingResumes,
+        error: getResumesError,
+    } = trpc.resume.getUserResumes.useQuery(undefined, {
+        staleTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
+    })
+
+    const {
+        data: resumeById,
+        refetch: getResumeById,
+        isLoading: isFetchingResume,
+        error: getResumeError,
+    } = trpc.resume.getResumeById.useQuery(
+        { id: cvId ?? "" },
+        {
+            enabled: false,
+            staleTime: 0, // fuerza siempre el refetch
+            cacheTime: 0, // (opcional) no lo guarda en caché
+        }
+    )
+
+    // ✨ Crear CV
+    const {
+        mutate: createResume,
+        isLoading: isCreatingResume,
+        error: createResumeError,
+    } = trpc.resume.createResume.useMutation({
+        onSuccess: ({ id }: any) => {
+            router.push(`/dashboard/editor?cv=${id}`)
+            utils.resume.getUserResumes.invalidate()
+        }
+    })
+
+    // ✏️ Editar CV
+    const {
+        mutate: updateResume,
+        isLoading: isUpdatingResume,
+        error: updateResumeError,
+    } = trpc.resume.updateResume.useMutation({
+        onMutate: async (updated) => {
+            await utils.resume.getUserResumes.cancel()
+            const previousData = utils.resume.getUserResumes.getData()
+
+            utils.resume.getUserResumes.setData(undefined, (old) =>
+                old?.map((r: any) => (r.id === updated.id ? { ...r, ...updated } : r)) ?? []
+            )
+
+            return { previousData }
         },
-        onError: (err, newResume, context) => {
-            // Revertir en caso de error
-            if (context?.previousResumes) {
-                utils.resume.getUserResumes.setData(undefined, context.previousResumes);
+        onError: (_, __, ctx) => {
+            if (ctx?.previousData) {
+                utils.resume.getUserResumes.setData(undefined, ctx.previousData)
             }
         },
-        onSuccess: (data) => {
-            // Forzar redirección inmediata
-            router.replace(`/dashboard/editor?cv=${data.id}`);
-            router.refresh();
-            // Invalidar la caché para asegurar que los datos estén actualizados
-            utils.resume.getUserResumes.invalidate();
+        onSuccess: () => {
+            utils.resume.getUserResumes.invalidate()
         },
-    });
+    })
 
-    // Editar un CV
-    const { mutate: updateResume, isLoading: isUpdatingResume, error: updateError } = trpc.resume.updateResume.useMutation({
-        onMutate: async ({ id, title }) => {
-            await utils.resume.getUserResumes.cancel();
-            const previousResumes = utils.resume.getUserResumes.getData();
-            utils.resume.getUserResumes.setData(undefined, (old) => {
-                if (!old) return old;
-                return old.map((resume) => 
-                    resume.id === id ? { ...resume, title } : resume
-                );
-            });
-            return { previousResumes };
-        },
-        onError: (err, variables, context) => {
-            if (context?.previousResumes) {
-                utils.resume.getUserResumes.setData(undefined, context.previousResumes);
-            }
-        },
-    });
-
-    // Eliminar un CV
-    const { mutate: deleteResume, isLoading: isDeletingResume, error: deleteError } = trpc.resume.deleteResume.useMutation({
+    // 🗑️ Eliminar CV
+    const {
+        mutate: deleteResume,
+        isLoading: isDeletingResume,
+        error: deleteResumeError,
+    } = trpc.resume.deleteResume.useMutation({
         onMutate: async ({ id }) => {
-            await utils.resume.getUserResumes.cancel();
-            const previousResumes = utils.resume.getUserResumes.getData();
-            utils.resume.getUserResumes.setData(undefined, (old) => {
-                if (!old) return old;
-                return old.filter((resume) => resume.id !== id);
-            });
-            return { previousResumes };
+            await utils.resume.getUserResumes.cancel()
+            const previousData = utils.resume.getUserResumes.getData()
+
+            utils.resume.getUserResumes.setData(undefined, (old) =>
+                old?.filter((r: any) => r.id !== id) ?? []
+            )
+
+            return { previousData }
         },
-        onError: (err, variables, context) => {
-            if (context?.previousResumes) {
-                utils.resume.getUserResumes.setData(undefined, context.previousResumes);
+        onError: (_, __, ctx) => {
+            if (ctx?.previousData) {
+                utils.resume.getUserResumes.setData(undefined, ctx.previousData)
             }
         },
-    });
+        onSuccess: () => {
+            utils.resume.getUserResumes.invalidate()
+        },
+    })
 
     return {
         // Datos
         resumes,
-        
-        // Estados de carga
-        isLoading: isLoadingResumes,
-        isCreating: isCreatingResume,
-        isUpdating: isUpdatingResume,
-        isDeleting: isDeletingResume,
-        
-        // Errores
-        createError,
-        updateError,
-        deleteError,
-        
-        // Mutaciones
+        resumeById,
+
+        // Acciones
+        getResumeById,
         createResume,
         updateResume,
         deleteResume,
-    };
-};
+
+        // Estados de carga
+        isLoadingResumes,
+        isCreatingResume,
+        isUpdatingResume,
+        isDeletingResume,
+        isFetchingResume,
+
+        // Errores
+        createResumeError,
+        updateResumeError,
+        deleteResumeError,
+        getResumesError,
+        getResumeError,
+    }
+}
